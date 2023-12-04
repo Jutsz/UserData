@@ -43,7 +43,7 @@ public class UserService {
         try (Session session = sessionFactory.openSession()) {
             Transaction transaction = session.beginTransaction();
 
-            session.createQuery("UPDATE UserLog SET expirationTimestamp = :newExpirationTime WHERE expirationTimestamp < CURRENT_TIMESTAMP")
+            session.createQuery("UPDATE User SET expirationTimestamp = :newExpirationTime WHERE expirationTimestamp < CURRENT_TIMESTAMP")
                     .setParameter("newExpirationTime", new Date(System.currentTimeMillis() + 5 * 60 * 1000))
                     .executeUpdate();
 
@@ -55,7 +55,7 @@ public class UserService {
         try (Session session = sessionFactory.openSession()) {
             Transaction transaction = session.beginTransaction();
 
-            session.createQuery("DELETE FROM UserLog WHERE username = :username")
+            session.createQuery("DELETE FROM User WHERE username = :username")
                     .setParameter("username", username)
                     .executeUpdate();
 

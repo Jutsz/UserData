@@ -3,7 +3,7 @@ public class Main {
 
     public static void main(String[] args) {
         
-        UserService.registerUser("user1", 123L, 5);
+        UserService.registerUser("Bela", 123L, 5);
 
        
         UserService.startExpirationUpdater(1);
@@ -16,6 +16,6 @@ public class Main {
         }
 
         
-        UserService.logoutUser("user1");
+        UserService.logoutUser("Bela");
     }
 }
