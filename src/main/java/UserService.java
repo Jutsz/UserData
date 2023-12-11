@@ -34,17 +34,19 @@ public class UserService {
         }
     }
 
-    public static void startExpirationUpdater(int updateIntervalMinutes) {
+    public static void startExpirationUpdater(int updateIntervalMinutes, String username, Long processID) {
         ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
-        scheduler.scheduleAtFixedRate(() -> updateExpirationTimestamps(), 0, updateIntervalMinutes, TimeUnit.MINUTES);
+        scheduler.scheduleAtFixedRate(() -> updateExpirationTimestamps(username, processID), 0, updateIntervalMinutes, TimeUnit.MINUTES);
     }
 
-    private static void updateExpirationTimestamps() {
+    private static void updateExpirationTimestamps(String username, Long processID) {
         try (Session session = sessionFactory.openSession()) {
             Transaction transaction = session.beginTransaction();
 
-            session.createQuery("UPDATE User SET expirationTimestamp = :newExpirationTime WHERE expirationTimestamp < CURRENT_TIMESTAMP")
+            session.createQuery("UPDATE User SET expirationTimestamp = :newExpirationTime WHERE expirationTimestamp < CURRENT_TIMESTAMP AND username = :username AND processID = :processID")
                     .setParameter("newExpirationTime", new Date(System.currentTimeMillis() + 5 * 60 * 1000))
+                    .setParameter("username", username)
+                    .setParameter("processID", processID)
                     .executeUpdate();
 
             transaction.commit();

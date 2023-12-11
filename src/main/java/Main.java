@@ -6,7 +6,7 @@ public class Main {
         UserService.registerUser("Bela", 123L, 5);
 
        
-        UserService.startExpirationUpdater(1);
+        UserService.startExpirationUpdater(1, "Bela", 123L);
 
         
         try {
